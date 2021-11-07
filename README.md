@@ -14,9 +14,9 @@
 
 ```sh
 
-yarn add react-native-reanimated-switch
+yarn add react-native-reanimated-switch-ts
 # or
-npm i react-native-reanimated-switch
+npm i react-native-reanimated-switch-ts
 
 ```
 
@@ -45,7 +45,7 @@ cd ios && pod install && cd ..
 ```js
 import React, { useState } from "react";
 import { SafeAreaView, StatusBar, StyleSheet, Text, View } from "react-native";
-import RNSwitch from "./src/Switch";
+import RNSiwtch from "react-native-reanimated-switch-ts";
 
 const App = () => {
   const [switchState, setSwitchState] = useState(false);
