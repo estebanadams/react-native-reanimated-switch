@@ -1,6 +1,6 @@
 {
   "name": "react-native-reanimated-switch-ts",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "A simple reanimated switch for iOS and Android Typescript",
   "main": "index.js",
   "scripts": {
