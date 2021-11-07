@@ -1,45 +1,65 @@
-import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet } from "react-native";
 import Animated, { interpolateColors, spring } from "react-native-reanimated";
 
-const RNSwitch = ({
+interface IRNSwitch {
+  handleOnPress: (boolean) => void;
+  value: boolean;
+  activeTrackColor?: string;
+  inActiveTrackColor?: string;
+  thumbColor?: string;
+  thumbStyle?: any;
+  containerStyle?: any;
+}
+
+const RNSwitch: React.FC<IRNSwitch> = ({
   handleOnPress,
   activeTrackColor,
   inActiveTrackColor,
   thumbColor,
   value,
+  thumbStyle,
+  containerStyle,
 }) => {
   const [switchTranslate] = useState(new Animated.Value(0));
+
+  const switchToOff = () =>
+    spring(switchTranslate, {
+      toValue: 0,
+      mass: 1,
+      damping: 15,
+      stiffness: 120,
+      overshootClamping: false,
+      restSpeedThreshold: 0.001,
+      restDisplacementThreshold: 0.001,
+    }).start();
+
+  const switchToOn = () =>
+    spring(switchTranslate, {
+      toValue: 21,
+      mass: 1,
+      damping: 15,
+      stiffness: 120,
+      overshootClamping: false,
+      restSpeedThreshold: 0.001,
+      restDisplacementThreshold: 0.001,
+    }).start();
+
   useEffect(() => {
     if (value) {
-      spring(switchTranslate, {
-        toValue: 21,
-        mass: 1,
-        damping: 15,
-        stiffness: 120,
-        overshootClamping: false,
-        restSpeedThreshold: 0.001,
-        restDisplacementThreshold: 0.001,
-      }).start();
+      switchToOn();
     } else {
-      spring(switchTranslate, {
-        toValue: 0,
-        mass: 1,
-        damping: 15,
-        stiffness: 120,
-        overshootClamping: false,
-        restSpeedThreshold: 0.001,
-        restDisplacementThreshold: 0.001,
-      }).start();
+      switchToOff();
     }
   }, [value, switchTranslate]);
+
   const interpolateBackgroundColor = {
     backgroundColor: interpolateColors(switchTranslate, {
       inputRange: [0, 22],
       outputColorRange: [inActiveTrackColor, activeTrackColor],
     }),
   };
+
   const memoizedOnSwitchPressCallback = React.useCallback(() => {
     handleOnPress(!value);
   }, [handleOnPress, value]);
@@ -47,11 +67,16 @@ const RNSwitch = ({
   return (
     <Pressable onPress={memoizedOnSwitchPressCallback}>
       <Animated.View
-        style={[styles.containerStyle, interpolateBackgroundColor]}
+        style={[
+          styles.containerStyle,
+          interpolateBackgroundColor,
+          containerStyle,
+        ]}
       >
         <Animated.View
           style={[
             styles.circleStyle,
+            thumbStyle,
             { backgroundColor: thumbColor },
             {
               transform: [
@@ -88,18 +113,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
-
     elevation: 4,
   },
 });
-
-RNSwitch.propTypes = {
-  handleOnPress: PropTypes.func.isRequired,
-  value: PropTypes.bool.isRequired,
-  activeTrackColor: PropTypes.string,
-  inActiveTrackColor: PropTypes.string,
-  thumbColor: PropTypes.string,
-};
 
 RNSwitch.defaultProps = {
   activeTrackColor: "#007AFF",
