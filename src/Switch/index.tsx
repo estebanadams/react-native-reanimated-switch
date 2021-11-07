@@ -3,11 +3,11 @@ import { Pressable, StyleSheet } from "react-native";
 import Animated, { interpolateColors, spring } from "react-native-reanimated";
 
 interface IRNSwitch {
-  handleOnPress: (boolean) => void;
+  handleOnPress: (arg0: boolean) => void;
   value: boolean;
-  activeTrackColor?: string;
-  inActiveTrackColor?: string;
-  thumbColor?: string;
+  activeTrackColor?: string | number;
+  inActiveTrackColor?: string | number;
+  thumbColor?: string | number;
   thumbStyle?: any;
   containerStyle?: any;
 }
