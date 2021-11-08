@@ -5,9 +5,9 @@ import Animated, { interpolateColors, spring } from "react-native-reanimated";
 interface IRNSwitch {
   handleOnPress: (arg0: boolean) => void;
   value: boolean;
-  activeTrackColor?: string | number;
-  inActiveTrackColor?: string | number;
-  thumbColor?: string | number;
+  activeTrackColor?: any;
+  inActiveTrackColor?: any;
+  thumbColor?: any;
   thumbStyle?: any;
   containerStyle?: any;
 }
