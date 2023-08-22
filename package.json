@@ -1,5 +1,5 @@
 {
-  "name": "@estebanleclet/react-native-reanimated-switch-ts",
+  "name": "@jaren82/react-native-reanimated3-switch",
   "version": "0.2.4",
   "description": "A simple reanimated switch for iOS and Android Typescript",
   "main": "index.ts",
@@ -11,7 +11,7 @@
     "prepublish": "npm run build"
   },
   "peerDependencies": {
-    "react": "17.x",
+    "react": "18.x",
     "react-native": "*",
     "react-native-reanimated": "*"
   },
@@ -41,7 +41,12 @@
   "devDependencies": {
     "metro-react-native-babel-preset": "^0.60.0",
     "standard-version": "^9.0.0",
-    "typescript": "^4.4.4"
+    "typescript": "^4.4.4",
+    "react": "18.2.0",
+    "react-native": "0.72.3"
+  },
+  "dependencies": {
+    "react-native-reanimated": "^3.0.2"
   },
   "optionalDependencies": {
     "fsevents": "^2.3.2"

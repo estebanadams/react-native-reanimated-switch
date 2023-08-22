@@ -1,6 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Pressable, StyleSheet } from "react-native";
-import Animated, { interpolateColors, spring } from "react-native-reanimated";
+import Animated, {
+  interpolateColor,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
 
 interface IRNSwitch {
   handleOnPress: (arg0: boolean) => void;
@@ -21,29 +26,27 @@ const RNSwitch: React.FC<IRNSwitch> = ({
   thumbStyle,
   containerStyle,
 }) => {
-  const [switchTranslate] = useState(new Animated.Value(0));
+  const switchTranslate = useSharedValue(0);
 
   const switchToOff = () =>
-    spring(switchTranslate, {
-      toValue: 0,
+    (switchTranslate.value = withSpring(0, {
       mass: 1,
       damping: 15,
       stiffness: 120,
       overshootClamping: false,
       restSpeedThreshold: 0.001,
       restDisplacementThreshold: 0.001,
-    }).start();
+    }));
 
   const switchToOn = () =>
-    spring(switchTranslate, {
-      toValue: 21,
+    (switchTranslate.value = withSpring(21, {
       mass: 1,
       damping: 15,
       stiffness: 120,
       overshootClamping: false,
       restSpeedThreshold: 0.001,
       restDisplacementThreshold: 0.001,
-    }).start();
+    }));
 
   useEffect(() => {
     if (value) {
@@ -53,15 +56,18 @@ const RNSwitch: React.FC<IRNSwitch> = ({
     }
   }, [value, switchTranslate]);
 
-  const interpolateBackgroundColor = {
-    backgroundColor: interpolateColors(switchTranslate, {
-      inputRange: [0, 22],
-      outputColorRange: [inActiveTrackColor, activeTrackColor],
-    }),
-  };
+  const interpolateBackgroundColor = useAnimatedStyle(() => {
+    return {
+      backgroundColor: interpolateColor(
+        switchTranslate.value,
+        [0, 22],
+        [inActiveTrackColor, activeTrackColor]
+      ),
+    };
+  });
 
-  const memoizedOnSwitchPressCallback = React.useCallback(() => {
-    handleOnPress(!value);
+  const memoizedOnSwitchPressCallback = useMemo(() => {
+    return () => handleOnPress(!value);
   }, [handleOnPress, value]);
 
   return (
